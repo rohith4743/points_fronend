@@ -1,0 +1,8 @@
+.pointForm .point{
+    border: 1px solid black;
+}
+
+.pointForm .addButton {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
