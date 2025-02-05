@@ -1,0 +1,38 @@
+name: Deploy React App to S3
+
+on:
+  push:
+    branches:
+      - main  # Triggers on push to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Use Node.js 20
+
+      - name: Verify Node.js Version
+        run: node -v
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build React Application
+        run: npm run build
+
+      - name: Deploy to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+        run: |
+          npm install -g aws-cli
+          aws s3 sync ./build/ s3://$AWS_BUCKET_NAME --region $AWS_REGION --delete
