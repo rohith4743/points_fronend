@@ -28,8 +28,7 @@ const App = () => {
 
   useEffect(() => {
     PointService.getPoints({searchTerm: searchQuery}).then((res) => {
-
-        setPoints(res.points)
+        setPoints(res.data)
     });
   }, [searchQuery]);
 
